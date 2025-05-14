@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "InventoryComponent.h"
+#include "ItemQuickSlotComponent.h"
+
 #include "QuestManager.h"
 #include "../Item/ItemEffectBase.h"
 #include "../Manager/QuarterViewGameInstance.h"
@@ -70,9 +72,11 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	}
 }
 
-void UInventoryComponent::OpenInventory()
+void UInventoryComponent::InitializeWithQuickSlot(UItemQuickSlotComponent* QuickSlot)
 {
-	
+	OnInventoryItemAction.AddDynamic(QuickSlot, &UItemQuickSlotComponent::HandleAddItemQuickSlot);
+	OnUpdateInventoryItem.AddDynamic(QuickSlot, &UItemQuickSlotComponent::HandleUpdateItemQuickSlot);
+	OnUpdateItemCoolingTime.AddDynamic(QuickSlot, &UItemQuickSlotComponent::HandleUpdateItemCoolingTime);
 }
 
 void UInventoryComponent::AddItem(const FString& ItemID)

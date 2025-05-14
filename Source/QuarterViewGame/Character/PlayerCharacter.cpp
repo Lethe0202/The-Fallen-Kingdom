@@ -3,19 +3,18 @@
 #include "PlayerCharacter.h"
 #include "QuarterViewGameInstance.h"
 #include "UIManager.h"
-#include "../Manager/QuestManager.h"
-#include "../Ability/PlayerAbilityComponent.h"
-#include "../Inventory/InventoryComponent.h"
-#include "../Quest/QuestLogComponent.h"
-#include "Component/ActionComponent.h"
-#include "../Interface/InteractableInterface.h"
-#include "Blueprint/UserWidget.h"
+#include "QuarterViewGame/Inventory/ItemQuickSlotComponent.h"
+#include "QuarterViewGame/Inventory/InventoryComponent.h"
+#include "QuarterViewGame/Manager/QuestManager.h"
+#include "QuarterViewGame/Ability/PlayerAbilityComponent.h"
+#include "QuarterViewGame/Quest/QuestLogComponent.h"
+#include "QuarterViewGame/Interface/InteractableInterface.h"
 
+#include "Component/ActionComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/SphereComponent.h"
-#include "Kismet/KismetMaterialLibrary.h"
-#include "QuarterViewGame/Inventory/ItemQuickSlotComponent.h"
+
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -40,8 +39,11 @@ APlayerCharacter::APlayerCharacter()
 	AbilityComponent = CreateDefaultSubobject<UPlayerAbilityComponent>(TEXT("AbilityComponent"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	ItemQuickSlotComponent = CreateDefaultSubobject<UItemQuickSlotComponent>(TEXT("ItemQuickSlotComponent"));
+
+	InventoryComponent->InitializeWithQuickSlot(ItemQuickSlotComponent);
+	ItemQuickSlotComponent->InitializeWithInventory(InventoryComponent);
 	
-	//퀵슬롯에 아이템 Add요청, index, 아이템ID 두종류
+	/*//퀵슬롯에 아이템 Add요청, index, 아이템ID 두종류
 	ItemQuickSlotComponent->OnAddItemQuickSlot.AddDynamic(InventoryComponent, &UInventoryComponent::HandleInventoryActionToIndex);
 	ItemQuickSlotComponent->OnAddItemQuickSlotToID.AddDynamic(InventoryComponent, &UInventoryComponent::HandleInventoryActionToID);
 	
@@ -53,7 +55,7 @@ APlayerCharacter::APlayerCharacter()
 	
 	//인벤토리에서 정보를 UItemQuickSlotComponent::HandleAddItemQuickSlot로 보냄
 	InventoryComponent->OnUpdateInventoryItem.AddDynamic(ItemQuickSlotComponent, &UItemQuickSlotComponent::HandleUpdateItemQuickSlot);
-	InventoryComponent->OnUpdateItemCoolingTime.AddDynamic(ItemQuickSlotComponent, &UItemQuickSlotComponent::HandleUpdateItemCoolingTime);
+	InventoryComponent->OnUpdateItemCoolingTime.AddDynamic(ItemQuickSlotComponent, &UItemQuickSlotComponent::HandleUpdateItemCoolingTime);*/
 	
 	QuestLogComponent = CreateDefaultSubobject<UQuestLogComponent>(TEXT("QuestLogComponent"));
 	QuestLogComponent->OnSuccessQuest.AddDynamic(this, &APlayerCharacter::OnSuccessQuest);

@@ -73,25 +73,24 @@ TSharedRef<SDockTab> FQuestTrackerModule::OnSpawnTab(const FSpawnTabArgs& SpawnT
 {
 	const FString WidgetPath = TEXT("/QuestTracker/EUW_QuestTracker.EUW_QuestTracker");
 	UEditorUtilityWidgetBlueprint* WidgetBP = LoadObject<UEditorUtilityWidgetBlueprint>(nullptr, *WidgetPath);
-	
-	UEditorUtilitySubsystem* EditorUtilitySubsystem = GEditor->GetEditorSubsystem<UEditorUtilitySubsystem>();
+	// 기존 열린 탭 정리
+	TSharedPtr<SDockTab> ExistingTab = FGlobalTabmanager::Get()->FindExistingLiveTab(FName("EUW_QuestTracker_C"));
+	if (ExistingTab)
+	{
+		ExistingTab->RequestCloseTab();
+	}
 
-	//X
-	//TSubclassOf<UEditorUtilityWidget> EditorUtilityWidgetClass =  StaticCast<TSubclassOf<UEditorUtilityWidget>>(WidgetBP->GeneratedClass);
-	//UEditorUtilityWidget* EditorUtilityWidget = NewObject<UEditorUtilityWidget>(GEditor->GetEditorWorldContext().World(), EditorUtilityWidgetClass);
-	//EditorUtilityWidget->AddToRoot();
+	UEditorUtilitySubsystem* EditorUtilitySubsystem = GEditor->GetEditorSubsystem<UEditorUtilitySubsystem>();
+	UEditorUtilityWidget* WidgetInstance = NewObject<UEditorUtilityWidget>(EditorUtilitySubsystem, WidgetBP->GeneratedClass);
 	
-	FName TabID;
-	UEditorUtilityWidget* WidgetInstance = EditorUtilitySubsystem->SpawnAndRegisterTabAndGetID(WidgetBP, TabID);
-	
+	// 신규 탭 생성 및 EditorUtilityWidget의 Slate Widget 추가
 	TSharedRef<SDockTab> NewTab = SNew(SDockTab).TabRole(ETabRole::NomadTab)
 	[
 		WidgetInstance->TakeWidget()
-
-		//X
-		//EditorUtilityWidget->TakeWidget()
 	];
-	
+
+	// 이전 방식
+	/*FName TabID;
 	//SpawnAndRegisterTabAndGetID에서 하나 NewTab하나 총2개스폰된다. 하지만 실제 사용할 탭은 NewTab이다 때문에 SpawnAndRegisterTabAndGetID으로 생성된 WidgetTab은 닫아주었다.
 	EditorUtilitySubsystem->CloseTabByID(TabID);
 
@@ -100,7 +99,7 @@ TSharedRef<SDockTab> FQuestTrackerModule::OnSpawnTab(const FSpawnTabArgs& SpawnT
 	if (ExistingTab)
 	{
 		ExistingTab->RequestCloseTab();	
-	}
+	}*/
 	
 	return NewTab;
 }

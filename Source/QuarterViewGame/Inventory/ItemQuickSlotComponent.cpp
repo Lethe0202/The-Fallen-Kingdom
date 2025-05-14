@@ -2,6 +2,7 @@
 
 
 #include "ItemQuickSlotComponent.h"
+#include "InventoryComponent.h"
 #include "../Manager/SaveManager.h"
 
 #include "EnhancedInputSubsystems.h"
@@ -61,6 +62,13 @@ void UItemQuickSlotComponent::InitPlayerInputComponent(UInputComponent* PlayerIn
 			}
 		}
 	}
+}
+
+void UItemQuickSlotComponent::InitializeWithInventory(UInventoryComponent* Inventory)
+{
+	OnAddItemQuickSlot.AddDynamic(Inventory, &UInventoryComponent::HandleInventoryActionToIndex);
+	OnAddItemQuickSlotToID.AddDynamic(Inventory, &UInventoryComponent::HandleInventoryActionToID);
+	OnUseItemQuickSlot.AddDynamic(Inventory, &UInventoryComponent::HandleUseItemToID);
 }
 
 void UItemQuickSlotComponent::Input_ItemQuickSlot(const FInputActionInstance& Value, const int32 Index)

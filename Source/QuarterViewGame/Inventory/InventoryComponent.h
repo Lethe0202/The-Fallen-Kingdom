@@ -7,6 +7,7 @@
 #include "../Interface/SaveableInterface.h"
 #include "InventoryComponent.generated.h"
 
+class UItemQuickSlotComponent;
 class UItemEffectBase;
 enum class ESaveDataType : uint8;
 
@@ -110,7 +111,7 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void OpenInventory();
+    void InitializeWithQuickSlot(UItemQuickSlotComponent* QuickSlot);
 
     UFUNCTION(BlueprintCallable)
     void AddItem(const FString& ItemID);

@@ -8,9 +8,11 @@
 
 class AAIBossCharacter;
 class UHUDBossHealthBarWidget;
+class UPlayerAbilityComponent;
 class UCharacterStatusComponent;
 class UInventoryPanelWidget;
 class UInventoryComponent;
+class UItemQuickSlotComponent;
 class UQuestTabWidget;
 
 UCLASS()

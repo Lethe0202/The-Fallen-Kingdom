@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "InputAction.h"
+#include "InputMappingContext.h"
 #include "QuarterViewGame/Interface/SaveableInterface.h"
 #include "ItemQuickSlotComponent.generated.h"
 
+class UInventoryComponent;
 class UInputMappingContext;
 class UInputComponent;
 class UEnhancedInputComponent;
@@ -31,6 +33,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void InitPlayerInputComponent(UInputComponent* PlayerInputComponent);
+	void InitializeWithInventory(UInventoryComponent* Inventory);
 	
 	const FString GetSlotInputStringFromInputAction(const UInputAction* InputAction) const;
 
